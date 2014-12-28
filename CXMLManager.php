@@ -26,7 +26,6 @@ class CXMLManager {
   public function __construct($XMLFileName) {
     $this->m_XMLFileName = $XMLFileName;
 
-    // If file does not exists we create one
     if(!file_exists($this->m_XMLFileName)){
       $dom = new DOMDocument('1.0', 'utf-8');
       $data = $dom->createElement("data");
@@ -63,7 +62,7 @@ class CXMLManager {
         $res = $field;
       }
     }
-    return $field;
+    return $res;
   }
 
   public function updateField($field){

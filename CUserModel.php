@@ -1,5 +1,7 @@
 <?php
 
+require_once("CCrypt.php");
+
 /**
  * Represent a User
  * Can be serialized in XML
@@ -10,7 +12,6 @@
 
 class CUserModel implements Serializable {
 
-  //TODO: Use Encryption for m_password
   private $m_username;
   private $m_password;
 
@@ -24,16 +25,16 @@ class CUserModel implements Serializable {
   }
 
   public function serialize() {
-    return serialize(
+    return CCrypt::crypt(serialize(
       array(
         'username' => $this->m_username,
         'password' => $this->m_password
       )
-    );
+    ));
   }
 
   public function unserialize($data) {
-    $data = unserialize($data);
+    $data = unserialize(CCrypt::decrypt($data));
 
     $this->m_username = $data['username'];
     $this->m_password = $data['password'];

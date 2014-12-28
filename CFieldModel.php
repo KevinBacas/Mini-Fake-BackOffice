@@ -1,5 +1,7 @@
 <?php
 
+require_once("CCrypt.php");
+
 /**
  * Represent a Field
  * Can be serialized in XML
@@ -35,16 +37,16 @@ class CFieldModel implements Serializable {
   }
 
   public function serialize() {
-    return serialize(
+    return CCrypt::crypt(serialize(
       array(
         'id' => $this->m_id,
         'content' => $this->m_content
       )
-    );
+    ));
   }
 
   public function unserialize($data) {
-    $data = unserialize($data);
+    $data = unserialize(CCrypt::decrypt($data));
 
     $this->m_id = $data['id'];
     $this->m_content = $data['content'];
