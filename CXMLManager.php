@@ -29,10 +29,8 @@ class CXMLManager {
     // If file does not exists we create one
     if(!file_exists($this->m_XMLFileName)){
       $dom = new DOMDocument('1.0', 'utf-8');
-      $users = $dom->createElement("users", "lel");
-      // $fields = $dom->createElement("fields", "lel");
-      $dom->appendChild($users);
-      // $dom->appendChild($fields);
+      $data = $dom->createElement("data");
+      $dom->appendChild($data);
       $dom->save($this->m_XMLFileName);
     }
 
@@ -42,8 +40,40 @@ class CXMLManager {
       echo "Erreur lors de l'analyse du document";
       exit;
     }
-    $this->SimpleXML = simplexml_import_dom($this->m_DOMDocument);
+    $this->m_SimpleXML = simplexml_import_dom($this->m_DOMDocument);
+    $this->m_SimpleXML->addChild('fields');
+    $this->m_SimpleXML->addChild('users');
 
+  }
+
+  public function registerField($field){
+    $res = false;
+    if(!$this->getField($field->getId())){
+      $child = $this->m_SimpleXML->fields->addChild("field", serialize($field));
+      $child->addAttribute("id", $field->getId());
+      $res = true;
+    }
+  }
+
+  public function getField($field_name){
+    $res = null;
+    foreach($this->m_SimpleXML->fields->field as $field){
+      $field = unserialize($field);
+      if($field->getId() == $field_name){
+        $res = $field;
+      }
+    }
+    return $field;
+  }
+
+  public function updateField($field){
+    for($i = 0 ; $this->m_SimpleXML->fields->field[$i] ; $i++){
+      $field_obj = unserialize($this->m_SimpleXML->fields->field[$i]);
+      if($field_obj->getId() == $field->getId()){
+        $this->m_SimpleXML->fields->field[$i] = serialize($field);
+      }
+    }
+    return $field;
   }
 
   public function toString(){

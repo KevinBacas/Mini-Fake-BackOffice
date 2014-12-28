@@ -22,8 +22,16 @@ class CFieldModel implements Serializable {
     $this->m_id = $id;
   }
 
-  public function setContent($id){
+  public function setContent($content){
     $this->m_content = $content;
+  }
+
+  public function getId(){
+    return $this->m_id;
+  }
+
+  public function getContent(){
+    return $this->m_content;
   }
 
   public function serialize() {
