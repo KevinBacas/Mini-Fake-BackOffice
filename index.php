@@ -11,6 +11,7 @@
   require_once('CUserModel.php');
   require_once('CFieldModel.php');
   require_once('CXMLManager.php');
+  require_once('CBackOfficeView.php');
 
   echo "<meta charset='utf-8'/>";
 
@@ -45,11 +46,21 @@
   $xml_manager->registerField($new_field);
   echo htmlentities($xml_manager->toString()) . "<br/>";
 
+  $field_name2 = "azerty";
+  $new_field2 = new CFieldModel($field_name2, "lel");
+  $xml_manager->registerField($new_field2);
+  echo htmlentities($xml_manager->toString()) . "<br/>";
+
   $field = $xml_manager->getField($field_name);
   var_dump($field);
   $field->setContent("QQV2 LEL");
   $xml_manager->updateField($field);
-  echo htmlentities($xml_manager->toString()) . "<br/>";
+  $field = $xml_manager->getField($field_name);
+  var_dump($field);
+
+  $back_office_view = new CBackOfficeView($xml_manager);
+  var_dump($xml_manager->getAllFields());
+  echo $back_office_view->listAllFieldsView();
 
   unlink($file_name);
 

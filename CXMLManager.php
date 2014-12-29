@@ -15,6 +15,7 @@
  * @author Kévin BACAS
  * @copyright APLICAEN
  */
+
 class CXMLManager {
 
   private $m_DOMDocument;
@@ -61,6 +62,14 @@ class CXMLManager {
       if($field->getId() == $field_name){
         $res = $field;
       }
+    }
+    return $res;
+  }
+
+  public function getAllFields(){
+    $res = array();
+    foreach($this->m_SimpleXML->fields->field as $field){
+      $res[] = unserialize($field);
     }
     return $res;
   }
