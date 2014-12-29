@@ -50,9 +50,9 @@ class CXMLManager {
     $res = false;
     if(!$this->getField($field->getId())){
       $child = $this->m_SimpleXML->fields->addChild("field", serialize($field));
-      $child->addAttribute("id", $field->getId());
       $res = true;
     }
+    return $res;
   }
 
   public function getField($field_name){
@@ -82,6 +82,26 @@ class CXMLManager {
       }
     }
     return $field;
+  }
+
+  public function createUser($user){
+    $res = false;
+    if(!$this->getUser($user->getUsername())){
+      $child = $this->m_SimpleXML->users->addChild("user", serialize($user));
+      $res = true;
+    }
+    return $res;
+  }
+
+  public function getUser($username){
+    $res = null;
+    foreach($this->m_SimpleXML->users->user as $user){
+      $user = unserialize($user);
+      if($user->getUsername() == $username){
+        $res = $user;
+      }
+    }
+    return $res;
   }
 
   public function toString(){

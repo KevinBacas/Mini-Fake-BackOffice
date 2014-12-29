@@ -15,7 +15,7 @@ class CFieldModel implements Serializable {
   private $m_id;
   private $m_content;
 
-  public function __construct($id = "", $content = "") {
+  public function __construct($id, $content) {
     $this->m_id = $id;
     $this->m_content = $content;
   }

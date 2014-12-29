@@ -15,13 +15,21 @@ class CUserModel implements Serializable {
   private $m_username;
   private $m_password;
 
-  public function __construct($username = "", $password = "") {
+  public function __construct($username, $password) {
     $this->m_username = $username;
     $this->m_password = $password;
   }
 
   public function updatePassword($newPassword){
     $m_password = $newPassword;
+  }
+
+  public function getUsername(){
+    return $this->m_username;
+  }
+
+  public function getPassword(){
+    return $this->m_password;
   }
 
   public function serialize() {

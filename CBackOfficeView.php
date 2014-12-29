@@ -91,11 +91,11 @@ class CBackOfficeView {
         <span class='input-group-addon' id='name_label'>Nom du champs</span>
         <input type='text' id='name' name='name' value='$name' class='form-control' disabled/>
       </div>
-      <br/>
+      <br/><br/>
       <div class='input-group'>
         <span class='input-group-addon'>Contenu</span>
-        <input type='text' id='content' name='content' value='$content' class='form-control'/>
       </div>
+      <textarea type='text' id='content' name='content' class='form-control'>$content</textarea>
       <br/>
       <div class='control-group'>
         <button type='submit' class='btn btn-primary'>Modifier</button>
