@@ -61,6 +61,7 @@
   $back_office_view = new CBackOfficeView($xml_manager);
   var_dump($xml_manager->getAllFields());
   echo $back_office_view->listAllFieldsView();
+  echo $back_office_view->editFieldView($field);
 
   unlink($file_name);
 

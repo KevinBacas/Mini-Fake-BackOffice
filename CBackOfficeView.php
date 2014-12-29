@@ -31,7 +31,7 @@ class CBackOfficeView {
   private function getFooter(){
     return "
       </div>
-      <script src='http://code.jquery.com/jquery.js'></script>
+      <script src='http://code.jquery.com/jquery.min.js'></script>
       <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js'></script>
     </body>
     </html>
@@ -63,10 +63,10 @@ class CBackOfficeView {
             <td>$content</td>
             <td>
               <a href='#' class='btn btn-primary'>
-                <i class='icon-edit icon-white'></i> Edit
+                Editer
               </a>
               <a href='#' class='btn btn-danger'>
-                <i class='icon-remove icon-white'></i> Delete
+                Supprimer
               </a>
             </td>
           </tr>
@@ -82,9 +82,39 @@ class CBackOfficeView {
     return $res;
   }
 
+  private function editFieldBootstrap($field){
+    $name = $field->getId();
+    $content = $field->getContent();
+    $res = "
+    <form action='' method='get' class='form-horizontal'>
+      <div class='input-group'>
+        <span class='input-group-addon' id='name_label'>Nom du champs</span>
+        <input type='text' id='name' name='name' value='$name' class='form-control' disabled/>
+      </div>
+      <br/>
+      <div class='input-group'>
+        <span class='input-group-addon'>Contenu</span>
+        <input type='text' id='content' name='content' value='$content' class='form-control'/>
+      </div>
+      <br/>
+      <div class='control-group'>
+        <button type='submit' class='btn btn-primary'>Modifier</button>
+      </div>
+    </form>
+    ";
+    return $res;
+  }
+
   public function listAllFieldsView(){
     $res = $this->getHeader();
     $res .= $this->listFieldsAsBoostrapTab();
+    $res .= $this->getFooter();
+    return $res;
+  }
+
+  public function editFieldView($field){
+    $res = $this->getHeader();
+    $res .= $this->editFieldBootstrap($field);
     $res .= $this->getFooter();
     return $res;
   }
