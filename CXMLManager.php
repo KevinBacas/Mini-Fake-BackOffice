@@ -100,7 +100,7 @@ class CXMLManager {
     return $res;
   }
 
-  public function getUser($username){
+  public function readUser($username){
     $res = null;
     foreach($this->m_SimpleXML->users->user as $user){
       $user = unserialize($user);

@@ -23,7 +23,7 @@ class CAuthManager {
 
   public function connect($username, $password){
     $res = false;
-    $user = $this->m_XMLManager->getUser($username);
+    $user = $this->m_XMLManager->readUser($username);
     if($user){
       if($password == $user->getPassword()){
         $_SESSION['isConnected'] = serialize($user);
