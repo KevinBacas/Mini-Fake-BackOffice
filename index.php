@@ -70,6 +70,10 @@
   $new_user = new CUserModel($new_user_username, $new_user_password);
   $xml_manager->createUser($new_user);
   var_dump($xml_manager->getUser($new_user_username));
+  $new_user->updatePassword($new_user_password . 'lel');
+  $xml_manager->updateUser($new_user);
+  var_dump($xml_manager->getUser($new_user_username));
+  echo htmlentities($xml_manager->toString()) . "<br/>";
 
   echo "Testing authentication...<hr>";
   $auth_manager = new CAuthManager($xml_manager);
