@@ -90,6 +90,14 @@ class CXMLManager {
     return $field;
   }
 
+  public function getAllUsers(){
+    $res = array();
+    foreach($this->m_SimpleXML->users->user as $user){
+      $res[] = unserialize($user);
+    }
+    return $res;
+  }
+
   public function createUser($user){
     $res = false;
     if(!$this->readUser($user->getUsername())){
