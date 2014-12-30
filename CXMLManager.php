@@ -92,7 +92,7 @@ class CXMLManager {
 
   public function createUser($user){
     $res = false;
-    if(!$this->getUser($user->getUsername())){
+    if(!$this->readUser($user->getUsername())){
       $child = $this->m_SimpleXML->users->addChild("user", serialize($user));
       $this->m_SimpleXML->saveXML($this->m_XMLFileName);
       $res = true;
@@ -116,6 +116,17 @@ class CXMLManager {
       $user_obj = unserialize($this->m_SimpleXML->users->user[$i]);
       if($user_obj->getUsername() == $user->getUsername()){
         $this->m_SimpleXML->users->user[$i] = serialize($user);
+        $this->m_SimpleXML->saveXML($this->m_XMLFileName);
+      }
+    }
+    return $user;
+  }
+
+  public function deleteUser($user){
+    for($i = 0 ; $this->m_SimpleXML->users->user[$i] != null ; $i++){
+      $user_obj = unserialize($this->m_SimpleXML->users->user[$i]);
+      if($user_obj->getUsername() == $user->getUsername()){
+        unset($this->m_SimpleXML->users->user[$i]);
         $this->m_SimpleXML->saveXML($this->m_XMLFileName);
       }
     }

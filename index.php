@@ -83,6 +83,10 @@
   $auth_manager->disconnect();
   echo 'Is connected ? ' . ($auth_manager->isConnected() ? "Yes" : "No") . '<br/>';
 
+  $xml_manager->deleteUser($new_user);
+  var_dump($xml_manager->readUser($new_user_username));
+  echo htmlentities($xml_manager->toString()) . "<br/>";
+  
   unlink($file_name);
 
 ?>
