@@ -20,21 +20,19 @@ class CBackOfficeView {
 
   private function getHeader(){
     return "
-    <!DOCTYPE html>
-    <head>
-      <title>Back Office</title>
-      <meta charset='utf-8'/>
-
-      <link href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' rel='stylesheet'>
-    </head>
-    <body>
-      <div class='container'>
+      <!DOCTYPE html>
+      <head>
+        <title>Back Office</title>
+        <meta charset='utf-8'/>
+        <link href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' rel='stylesheet'>
+      </head>
+      <body>
+        <div class='container'>
     ";
   }
 
   private function getTopBar(){
     $res = "
-      <!-- Static navbar -->
       <nav class='navbar navbar-default'>
         <div class='container-fluid'>
           <div class='navbar-header'>
@@ -73,15 +71,15 @@ class CBackOfficeView {
 
   private function listFieldsAsBoostrapTab(){
     $res = "
-    <table width='600' cellpadding='5' class='table table-hover table-bordered'>
-      <thead>
-        <tr>
-          <th scope='col'>Name</th>
-          <th scope='col'>Content</th>
-          <th scope='col'>Action</th>
-        </tr>
-      </thead>
-      <tbody>
+      <table width='600' cellpadding='5' class='table table-hover table-bordered'>
+        <thead>
+          <tr>
+            <th scope='col'>Name</th>
+            <th scope='col'>Content</th>
+            <th scope='col'>Action</th>
+          </tr>
+        </thead>
+        <tbody>
     ";
 
     $fields = $this->m_XMLManager->getAllFields();
@@ -89,7 +87,7 @@ class CBackOfficeView {
       foreach($fields as $field){
         $name = $field->getId();
         $content = $field->getContent();
-        $edit_action_name = EDIT_ACTION_NAME;
+        $edit_action_name = EDIT_FIELD_ACTION_NAME;
         $fieldname_get = FIELDNAME_GET;
         $res .= "
           <tr>
@@ -116,18 +114,23 @@ class CBackOfficeView {
   private function editFieldBootstrap($field){
     $name = $field->getId();
     $content = $field->getContent();
+    $fieldname_get = FIELDNAME_GET;
+    $fieldcontent_get = FIELDCONTENT_GET;
+    $edit_field_action_name = EDIT_FIELD_ACTION_NAME;
     $res = "
     <form action='' method='get' class='form-horizontal'>
       <div class='input-group'>
         <span class='input-group-addon' id='name_label'>Nom du champs</span>
-        <input type='text' id='name' name='name' value='$name' class='form-control' disabled/>
+        <input type='text' id='name' name='$fieldname_get' value='$name' class='form-control' disabled/>
       </div>
       <br/><br/>
       <div class='input-group'>
         <span class='input-group-addon'>Contenu</span>
       </div>
-      <textarea type='text' id='content' name='content' class='form-control'>$content</textarea>
+      <textarea type='text' name='$fieldcontent_get' class='form-control'>$content</textarea>
       <br/>
+      <input type='text' name='action' value='$edit_field_action_name' hidden/>
+      <input type='text' name='$fieldname_get' value='$name' hidden/>
       <div class='control-group'>
         <button type='submit' class='btn btn-primary'>Modifier</button>
       </div>
@@ -144,13 +147,13 @@ class CBackOfficeView {
     </a>
     <br/>
     <table width='600' cellpadding='5' class='table table-hover table-bordered'>
-    <thead>
-    <tr>
-    <th scope='col'>Username</th>
-    <th scope='col'>Password</th>
-    <th scope='col'>Action</th>
-    </tr>
-    </thead>
+      <thead>
+        <tr>
+          <th scope='col'>Username</th>
+          <th scope='col'>Password</th>
+          <th scope='col'>Action</th>
+        </tr>
+      </thead>
 
     <tbody>
     ";
@@ -162,26 +165,25 @@ class CBackOfficeView {
         $password = $user->getPassword();
         $res .= "
         <tr>
-        <td>$username</td>
-        <td>$password</td>
-        <td>
-        <a href='#' class='btn btn-primary'>
-        Editer
-        </a>
-        <a href='#' class='btn btn-danger'>
-        Supprimer
-        </a>
-        </td>
+          <td>$username</td>
+          <td>$password</td>
+          <td>
+            <a href='#' class='btn btn-primary'>
+              Editer
+            </a>
+            <a href='#' class='btn btn-danger'>
+              Supprimer
+            </a>
+          </td>
         </tr>
         ";
       }
     }
 
     $res .= "
-    </tbody>
-    </table>
+      </tbody>
+      </table>
     ";
-
     return $res;
   }
 

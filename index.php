@@ -18,6 +18,7 @@
   // !!! GETTING CONTROLLER PARAMETERS
   $action = @$_GET[ACTION_GET];
   $field_name = @$_GET[FIELDNAME_GET];
+  $field_content = @$_GET[FIELDCONTENT_GET];
   $connection_error = @$_GET[CONNECTION_ERROR_GET];
   $username = @$_GET[USERNAME_GET];
   $password = @$_GET[PASSWORD_GET];
@@ -52,6 +53,25 @@
     $field = $xml_manager->getField($field_name);
     $field_content = ($field ? $field->getContent() : '');
     echo json_encode(array('fieldcontent' => $field_content));
+
+  } else if($action == EDIT_FIELD_ACTION_NAME ) {
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $back_office_view = new CBackOfficeView($xml_manager);
+    $auth_manager = new CAuthManager($xml_manager);
+    if($auth_manager->isConnected()) {
+      $field = $xml_manager->getField($field_name);
+      var_dump($field_content);
+      if($field_content) {
+        $field->setContent($field_content);
+        $xml_manager->updateField($field);
+        header('Location: index.php');
+      } else {
+        echo $back_office_view->editFieldView($field);
+      }
+    } else {
+      header('Location: index.php?connection_error="Vous devez vous identifier."');
+    }
 
   } else if($action == TEST_ACTION_NAME) {
     echo "<meta charset='utf-8'/>";
