@@ -94,7 +94,7 @@
 
     echo "Testing XMLManager...<hr>";
     $xml_manager = new CXMLManager(XML_TEST_FILENAME);
-    if(file_exists($xml_test_filename)){
+    if(file_exists(XML_TEST_FILENAME)){
       echo htmlentities($xml_manager->toString()) . "<br/>";
     }else{
       echo "FAIL !";
@@ -149,7 +149,7 @@
     $xml_manager->deleteUser($new_user);
     var_dump($xml_manager->readUser($new_user_username));
 
-    unlink($xml_test_filename);
+    unlink(XML_TEST_FILENAME);
   }
 
 ?>
