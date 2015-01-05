@@ -36,19 +36,17 @@ class CBackOfficeView {
     $res = "
       <!-- Static navbar -->
       <nav class='navbar navbar-default'>
-      <div class='container-fluid'>
-      <div class='navbar-header'>
-      <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar'>
-      <span class='sr-only'>Toggle navigation</span>
-      <span class='icon-bar'></span>
-      <span class='icon-bar'></span>
-      <span class='icon-bar'></span>
-      </button>
-      <a class='navbar-brand' href='#'>Back Office</a>
-      </div>
-      <div id='navbar' class='navbar-collapse collapse'>
-      </div><!--/.nav-collapse -->
-      </div><!--/.container-fluid -->
+        <div class='container-fluid'>
+          <div class='navbar-header'>
+            <button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#navbar' aria-expanded='false' aria-controls='navbar'>
+              <span class='sr-only'>Toggle navigation</span>
+              <span class='icon-bar'></span>
+              <span class='icon-bar'></span>
+              <span class='icon-bar'></span>
+            </button>
+            <a class='navbar-brand' href='./index.php'>Back Office</a>
+          </div>
+        </div><!--/.container-fluid -->
       </nav>
     ";
     return $res;
@@ -60,7 +58,7 @@ class CBackOfficeView {
           <div class='row'>
             <div class='col-lg-12'>
               <ul class='nav nav-pills nav-justified'>
-              <li><a href='http://www.aplicaen.fr'>© 2015 APLICAEN, Élèves-entrepreneurs</a></li>
+              <li><a href='http://www.aplicaen.fr/'>© 2015 APLICAEN, Élèves-entrepreneurs</a></li>
               <li><a href='http://www.expansion2plus1.fr/'>© 2015 Expansion2plus1</a></li>
               </ul>
             </div>
@@ -83,7 +81,6 @@ class CBackOfficeView {
           <th scope='col'>Action</th>
         </tr>
       </thead>
-
       <tbody>
     ";
 
@@ -101,9 +98,6 @@ class CBackOfficeView {
             <td>
               <a href='./index.php?action=$edit_action_name&$fieldname_get=$name' class='btn btn-primary'>
                 Editer
-              </a>
-              <a href='#' class='btn btn-danger'>
-                Supprimer
               </a>
             </td>
           </tr>
@@ -143,7 +137,12 @@ class CBackOfficeView {
   }
 
   private function listUsersAsBoostrapTab(){
+    $create_user_action_name = CREATE_USER_ACTION_NAME;
     $res = "
+    <a href='./index.php?action=$create_user_action_name' class='btn btn-default'>
+      Creer un utilisateur
+    </a>
+    <br/>
     <table width='600' cellpadding='5' class='table table-hover table-bordered'>
     <thead>
     <tr>
