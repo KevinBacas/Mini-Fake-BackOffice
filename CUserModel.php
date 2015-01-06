@@ -24,6 +24,10 @@ class CUserModel implements Serializable {
     $this->m_password = $newPassword;
   }
 
+  public function updateUsername($newUsername){
+    $this->m_username = $newUsername;
+  }
+
   public function getUsername(){
     return $this->m_username;
   }

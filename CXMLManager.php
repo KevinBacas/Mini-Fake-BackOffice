@@ -119,10 +119,10 @@ class CXMLManager {
     return $res;
   }
 
-  public function updateUser($user){
+  public function updateUser($user, $old_username){
     for($i = 0 ; $this->m_SimpleXML->users->user[$i] != null ; $i++){
       $user_obj = unserialize($this->m_SimpleXML->users->user[$i]);
-      if($user_obj->getUsername() == $user->getUsername()){
+      if($user_obj->getUsername() == $old_username){
         $this->m_SimpleXML->users->user[$i] = serialize($user);
         $this->m_SimpleXML->saveXML($this->m_XMLFileName);
       }

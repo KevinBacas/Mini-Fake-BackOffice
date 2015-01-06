@@ -22,6 +22,7 @@
   $connection_error = @$_GET[CONNECTION_ERROR_GET];
   $username = @$_GET[USERNAME_GET];
   $password = @$_GET[PASSWORD_GET];
+  $old_username = @$_GET[OLD_USERNAME_GET];
 
   // !!! CONTROLLER
   if(!$action || $action == AUTH_ACTION_NAME){
@@ -31,7 +32,8 @@
     $auth_manager = new CAuthManager($xml_manager);
 
     if($auth_manager->isConnected()){
-      echo $back_office_view->listAllFieldsView();
+      // echo $back_office_view->listAllFieldsView();
+      echo $back_office_view->listAllUsersView();
     } else {
       echo $back_office_view->authenticationView(($connection_error ? $connection_error : ''));
     }
@@ -68,6 +70,66 @@
         header('Location: index.php');
       } else {
         echo $back_office_view->editFieldView($field);
+      }
+    } else {
+      header('Location: index.php?connection_error="Vous devez vous identifier."');
+    }
+
+  } else if($action == CREATE_USER_ACTION_NAME) {
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $back_office_view = new CBackOfficeView($xml_manager);
+    $auth_manager = new CAuthManager($xml_manager);
+    if($auth_manager->isConnected()) {
+      if($username && $password){
+        $new_user = new CUserModel($username, $password);
+        $xml_manager->createUser($new_user);
+        header('Location: index.php');
+      } else {
+        echo $back_office_view->createUserView();
+      }
+    } else {
+      header('Location: index.php?connection_error="Vous devez vous identifier."');
+    }
+
+  } else if($action == UPDATE_USER_ACTION_NAME) {
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $back_office_view = new CBackOfficeView($xml_manager);
+    $auth_manager = new CAuthManager($xml_manager);
+    if($auth_manager->isConnected()) {
+      if($old_username && $username && $password){
+        $user = $xml_manager->readUser($old_username);
+        var_dump($user);
+        $user->updateUsername($username);
+        $user->updatePassword($password);
+        $xml_manager->updateUser($user, $old_username);
+        var_dump($user);
+        header('Location: index.php');
+      } else if($username) {
+        $user = $xml_manager->readUser($username);
+        echo $back_office_view->updateUserView($user);
+      } else {
+        header('Location: index.php');
+      }
+    } else {
+      header('Location: index.php?connection_error="Vous devez vous identifier."');
+    }
+
+  } else if($action == DELETE_USER_ACTION_NAME) {
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $back_office_view = new CBackOfficeView($xml_manager);
+    $auth_manager = new CAuthManager($xml_manager);
+    if($auth_manager->isConnected()) {
+      if($username){
+        $user = $xml_manager->readUser($username);
+        if($user){
+          $xml_manager->deleteUser($user);
+        }
+        header('Location: index.php');
+      } else {
+        header('Location: index.php');
       }
     } else {
       header('Location: index.php?connection_error="Vous devez vous identifier."');
@@ -131,7 +193,7 @@
     var_dump($xml_manager->readUser($new_user_username));
     $new_user_password = $new_user_password . 'lel';
     $new_user->updatePassword($new_user_password);
-    $xml_manager->updateUser($new_user);
+    $xml_manager->updateUser($new_user, $new_user->getUsername());
     var_dump($xml_manager->readUser($new_user_username));
     echo htmlentities($xml_manager->toString()) . "<br/>";
 
@@ -144,7 +206,7 @@
 
     echo $back_office_view->listAllUsersView();
     echo $back_office_view->createUserView();
-    echo $back_office_view->editUserView($new_user);
+    echo $back_office_view->updateUserView($new_user);
 
     $xml_manager->deleteUser($new_user);
     var_dump($xml_manager->readUser($new_user_username));
