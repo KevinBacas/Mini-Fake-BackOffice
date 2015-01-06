@@ -1,8 +1,29 @@
 <?php
 
+  function curPageURL() {
+    $pageURL = 'http';
+    if (@$_SERVER["HTTPS"] == "on") {$pageURL .= "s";}
+    $pageURL .= "://";
+
+    $url = $_SERVER['REQUEST_URI'];
+    $parts = explode('/',$url);
+    $dir = '';
+    for ($i = 0; $i < count($parts) - 1; $i++) {
+      $dir .= $parts[$i] . '/';
+    }
+
+    if (@$_SERVER["SERVER_PORT"] != "80") {
+      $pageURL .= $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"].$dir;
+    } else {
+      $pageURL .= $_SERVER["SERVER_NAME"].$dir;
+    }
+    return $pageURL;
+  }
+
   // !!! GLOBAL VARS
   // - GET params names
-  define('CONTROLLER_URL', 'index.php');
+  define('BASE_URL', curPageURL());
+  define('CONTROLLER_URL', BASE_URL . 'index.php');
   define('ACTION_GET', 'action');
   define('FIELDNAME_GET', 'fieldname');
   define('FIELDCONTENT_GET', 'fieldcontent');

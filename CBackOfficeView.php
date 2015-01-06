@@ -19,12 +19,13 @@ class CBackOfficeView {
   }
 
   private function getHeader(){
+    $base_url = BASE_URL;
     return "
       <!DOCTYPE html>
       <head>
         <title>Back Office</title>
         <meta charset='utf-8'/>
-        <link href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css' rel='stylesheet'>
+        <link href='$base_url/static/css/bootstrap.min.css' rel='stylesheet'>
       </head>
       <body>
         <div class='container'>
@@ -32,6 +33,7 @@ class CBackOfficeView {
   }
 
   private function getTopBar(){
+    $controller_url = CONTROLLER_URL;
     $res = "
       <nav class='navbar navbar-default'>
         <div class='container-fluid'>
@@ -42,15 +44,16 @@ class CBackOfficeView {
               <span class='icon-bar'></span>
               <span class='icon-bar'></span>
             </button>
-            <a class='navbar-brand' href='./index.php'>Back Office</a>
+            <a class='navbar-brand' href='$controller_url'>Back Office</a>
           </div>
-        </div><!--/.container-fluid -->
+        </div>
       </nav>
     ";
     return $res;
   }
 
   private function getFooter(){
+    $base_url = BASE_URL;
     return "
           <hr>
           <div class='row'>
@@ -62,8 +65,8 @@ class CBackOfficeView {
             </div>
           </div>
         </div>
-        <script src='http://code.jquery.com/jquery.min.js'></script>
-        <script src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js'></script>
+        <script src='$base_url/static/js/jquery.min.js'></script>
+        <script src='$base_url/static/js/bootstrap.min.js'></script>
       </body>
       </html>
     ";
@@ -96,7 +99,7 @@ class CBackOfficeView {
             <td>$name</td>
             <td>$content</td>
             <td>
-              <a href='./$controller_url?$action_get=$edit_action_name&$fieldname_get=$name' class='btn btn-primary'>
+              <a href='$controller_url?$action_get=$edit_action_name&$fieldname_get=$name' class='btn btn-primary'>
                 Editer
               </a>
             </td>
@@ -122,7 +125,7 @@ class CBackOfficeView {
     $fieldcontent_get = FIELDCONTENT_GET;
     $edit_field_action_name = EDIT_FIELD_ACTION_NAME;
     $res = "
-    <form action='./$controller_url' method='get' class='form-horizontal'>
+    <form action='$controller_url' method='get' class='form-horizontal'>
       <div class='input-group'>
         <span class='input-group-addon' id='name_label'>Nom du champs</span>
         <input type='text' name='$fieldname_get' value='$name' class='form-control' disabled/>
@@ -151,7 +154,7 @@ class CBackOfficeView {
     $action_get = ACTION_GET;
     $username_get =  USERNAME_GET;
     $res = "
-    <a href='./$controller_url?$action_get=$create_user_action_name' class='btn btn-default'>
+    <a href='$controller_url?$action_get=$create_user_action_name' class='btn btn-default'>
       Creer un utilisateur
     </a>
     <br/>
@@ -177,10 +180,10 @@ class CBackOfficeView {
           <td>$username</td>
           <td>$password</td>
           <td>
-            <a href='./$controller_url?$action_get=$edit_user_action_name&$username_get=$username' class='btn btn-primary'>
+            <a href='$controller_url?$action_get=$edit_user_action_name&$username_get=$username' class='btn btn-primary'>
               Editer
             </a>
-            <a href='./$controller_url?$action_get=$delete_user_action_name&$username_get=$username' class='btn btn-danger'>
+            <a href='$controller_url?$action_get=$delete_user_action_name&$username_get=$username' class='btn btn-danger'>
               Supprimer
             </a>
           </td>
@@ -203,7 +206,7 @@ class CBackOfficeView {
     $username_get = USERNAME_GET;
     $password_get = PASSWORD_GET;
     $res = "
-    <form action='./$controller_url' method='get' class='form-horizontal'>
+    <form action='$controller_url' method='get' class='form-horizontal'>
       <div class='input-group'>
         <span class='input-group-addon' id='name_label'>Nom d'utilisateur</span>
         <input type='text' name='$username_get' value='' placeholder='Username' class='form-control'/>
@@ -234,7 +237,7 @@ class CBackOfficeView {
     $password = $user->getPassword();
     $old_username = $username;
     $res = "
-    <form action='./$controller_url' method='get' class='form-horizontal'>
+    <form action='$controller_url' method='get' class='form-horizontal'>
       <div class='input-group'>
         <span class='input-group-addon' id='name_label'>Nom d'utilisateur</span>
         <input type='text' name='$username_get' value='$username' placeholder='Username' class='form-control'/>
@@ -266,7 +269,7 @@ class CBackOfficeView {
         <div class='col-md-offset-4 col-md-4'>
           <div class='form-login'>
             <h4>Veuillez vous identifier.</h4>
-            <form action='./$controller_url' method='GET' class='form-horizontal'>
+            <form action='$controller_url' method='GET' class='form-horizontal'>
               <input type='text' name='$username_get' class='form-control input-sm chat-input' placeholder='username' />
               <input type='password' name='$password_get' class='form-control input-sm chat-input' placeholder='password' />
               <div class='control-group'>

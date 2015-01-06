@@ -32,8 +32,8 @@
     $auth_manager = new CAuthManager($xml_manager);
 
     if($auth_manager->isConnected()){
-      // echo $back_office_view->listAllFieldsView();
-      echo $back_office_view->listAllUsersView();
+      echo $back_office_view->listAllFieldsView();
+      // echo $back_office_view->listAllUsersView();
     } else {
       echo $back_office_view->authenticationView(($connection_error ? $connection_error : ''));
     }
