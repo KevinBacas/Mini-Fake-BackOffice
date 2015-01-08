@@ -117,6 +117,7 @@ class CBackOfficeView {
   }
 
   private function editFieldBootstrap($field){
+    $base_url = BASE_URL;
     $controller_url = CONTROLLER_URL;
     $action_get = ACTION_GET;
     $name = $field->getId();
@@ -125,23 +126,27 @@ class CBackOfficeView {
     $fieldcontent_get = FIELDCONTENT_GET;
     $edit_field_action_name = EDIT_FIELD_ACTION_NAME;
     $res = "
-    <form action='$controller_url' method='get' class='form-horizontal'>
-      <div class='input-group'>
-        <span class='input-group-addon' id='name_label'>Nom du champs</span>
-        <input type='text' name='$fieldname_get' value='$name' class='form-control' disabled/>
-      </div>
-      <br/><br/>
-      <div class='input-group'>
-        <span class='input-group-addon'>Contenu</span>
-      </div>
-      <textarea type='text' name='$fieldcontent_get' class='form-control'>$content</textarea>
-      <br/>
-      <input type='text' name='$action_get' value='$edit_field_action_name' hidden/>
-      <input type='text' name='$fieldname_get' value='$name' hidden/>
-      <div class='control-group'>
-        <button type='submit' class='btn btn-primary'>Modifier</button>
-      </div>
-    </form>
+      <form action='$controller_url' method='get' class='form-horizontal'>
+        <div class='input-group'>
+          <span class='input-group-addon' id='name_label'>Nom du champs</span>
+          <input type='text' name='$fieldname_get' value='$name' class='form-control' disabled/>
+        </div>
+        <br/><br/>
+        <div class='input-group'>
+          <span class='input-group-addon'>Contenu</span>
+        </div>
+        <textarea type='text' name='$fieldcontent_get' class='form-control'>$content</textarea>
+        <br/>
+        <input type='text' name='$action_get' value='$edit_field_action_name' hidden/>
+        <input type='text' name='$fieldname_get' value='$name' hidden/>
+        <div class='control-group'>
+          <button type='submit' class='btn btn-primary'>Modifier</button>
+        </div>
+      </form>
+      <script src='//tinymce.cachefly.net/4.1/tinymce.min.js'></script>
+      <script>
+        tinymce.init({selector:'textarea'});
+      </script>
     ";
     return $res;
   }
@@ -258,29 +263,52 @@ class CBackOfficeView {
     return $res;
   }
 
-  public function authenticationFormBootstrap($error){
+  private function authenticationFormBootstrap($error){
+    $base_url = BASE_URL;
     $controller_url = CONTROLLER_URL;
     $action_get = ACTION_GET;
     $username_get = USERNAME_GET;
     $password_get = PASSWORD_GET;
     $connect_action_name = CONNECT_ACTION_NAME;
     $res = "
+      <link href='$base_url/static/css/signin.css' rel='stylesheet'>
+      <form action='$controller_url' method='GET' class='form-signin'>
+        <h2 class='form-signin-heading'>Please sign in</h2>
+        <input id='username' type='text' name='$username_get' class='form-control' placeholder='Login' required autofocus>
+        <input type='password' name='$password_get' class='form-control' placeholder='Mot de passe' required>
+        <input type='text' name='$action_get' value='$connect_action_name' hidden/>
+        <button class='btn btn-lg btn-primary btn-block' type='submit'>Se connecter</button>
+        <br/>
+    ";
+    if($error){
+        $res .= "<div class='alert alert-danger' role='alert'>$error</div>";
+    }
+    $res .= "</form>";
+    return $res;
+  }
+
+  private function mainBootstrap(){
+    $controller_url = CONTROLLER_URL;
+    $action_get = ACTION_GET;
+    $list_fields_action_name = LIST_FIELDS_ACTION_NAME;
+    $list_users_action_name = LIST_USERS_ACTION_NAME;
+    $res = "
+      <!-- Projects Row -->
       <div class='row'>
-        <div class='col-md-offset-4 col-md-4'>
-          <div class='form-login'>
-            <h4>Veuillez vous identifier.</h4>
-            <form action='$controller_url' method='GET' class='form-horizontal'>
-              <input type='text' name='$username_get' class='form-control input-sm chat-input' placeholder='username' />
-              <input type='password' name='$password_get' class='form-control input-sm chat-input' placeholder='password' />
-              <div class='control-group'>
-                <button type='submit' class='btn btn-primary'>Se connecter</button>
-              </div>
-              <input type='text' name='$action_get' value='$connect_action_name' hidden/>
-            </form>
-            <div class='alert alert-danger' role='alert'>$error</div>
-          </div>
+        <div class='col-md-6 portfolio-item'>
+          <h3>
+            <a href='$controller_url?$action_get=$list_fields_action_name'>Gestion des champs</a>
+          </h3>
+          <p>Vous pouvez modifier les champs présents sur le site.</p>
+        </div>
+        <div class='col-md-6 portfolio-item'>
+          <h3>
+            <a href='$controller_url?$action_get=$list_users_action_name'>Gestion des utilisateurs</a>
+          </h3>
+          <p>Vous pouvez ajouter, modifier ou supprimer des utilisateurs.</p>
         </div>
       </div>
+      <!-- /.row -->
     ";
     return $res;
   }
@@ -329,6 +357,14 @@ class CBackOfficeView {
     $res = $this->getHeader();
     $res .= $this->getTopBar();
     $res .= $this->authenticationFormBootstrap($error);
+    $res .= $this->getFooter();
+    return $res;
+  }
+
+  public function mainView(){
+    $res = $this->getHeader();
+    $res .= $this->getTopBar();
+    $res .= $this->mainBootstrap();
     $res .= $this->getFooter();
     return $res;
   }

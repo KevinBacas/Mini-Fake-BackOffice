@@ -32,10 +32,35 @@
     $auth_manager = new CAuthManager($xml_manager);
 
     if($auth_manager->isConnected()){
-      echo $back_office_view->listAllFieldsView();
-      // echo $back_office_view->listAllUsersView();
+      echo $back_office_view->mainView();
     } else {
       echo $back_office_view->authenticationView(($connection_error ? $connection_error : ''));
+    }
+
+  } else if($action == LIST_USERS_ACTION_NAME) {
+
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $back_office_view = new CBackOfficeView($xml_manager);
+    $auth_manager = new CAuthManager($xml_manager);
+
+    if($auth_manager->isConnected()){
+      echo $back_office_view->listAllUsersView();
+    } else {
+      header('Location: index.php?connection_error="Vous devez vous identifier."');
+    }
+
+  } else if($action == LIST_FIELDS_ACTION_NAME) {
+
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $back_office_view = new CBackOfficeView($xml_manager);
+    $auth_manager = new CAuthManager($xml_manager);
+
+    if($auth_manager->isConnected()){
+      echo $back_office_view->listAllFieldsView();
+    } else {
+      header('Location: index.php?connection_error="Vous devez vous identifier."');
     }
 
   } else if($action == CONNECT_ACTION_NAME) {
@@ -49,12 +74,29 @@
       header('Location: index.php?connection_error="Nom d\'utilisateur/Mot de passe invalide(s)"');
     }
 
+  } else if($action == IS_CONNECTED) {
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $auth_manager = new CAuthManager($xml_manager);
+    $is_connected = $auth_manager->isConnected();
+    header('Content-Type: application/json');
+    echo json_encode(array('isConnected' => $is_connected));
+
   } else if($action == GET_FIELD_ACTION_NAME) {
 
     $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
     $field = $xml_manager->getField($field_name);
     $field_content = ($field ? $field->getContent() : '');
-    echo json_encode(array('fieldcontent' => $field_content));
+    header('Content-Type: application/json');
+    echo json_encode(array('fieldContent' => $field_content));
+
+  } else if($action == REGISTER_FIELD_ACTION_NAME) {
+
+    $xml_manager = new CXMLManager(XML_PRODUCTION_FILENAME);
+    $field = new CFieldModel($field_name, $field_content);
+    $field_added = $xml_manager->registerField($field);
+    header('Content-Type: application/json');
+    echo json_encode(array('fieldAdded' => $field_added));
 
   } else if($action == EDIT_FIELD_ACTION_NAME ) {
 
@@ -63,7 +105,6 @@
     $auth_manager = new CAuthManager($xml_manager);
     if($auth_manager->isConnected()) {
       $field = $xml_manager->getField($field_name);
-      var_dump($field_content);
       if($field_content) {
         $field->setContent($field_content);
         $xml_manager->updateField($field);
@@ -100,11 +141,9 @@
     if($auth_manager->isConnected()) {
       if($old_username && $username && $password){
         $user = $xml_manager->readUser($old_username);
-        var_dump($user);
         $user->updateUsername($username);
         $user->updatePassword($password);
         $xml_manager->updateUser($user, $old_username);
-        var_dump($user);
         header('Location: index.php');
       } else if($username) {
         $user = $xml_manager->readUser($username);
